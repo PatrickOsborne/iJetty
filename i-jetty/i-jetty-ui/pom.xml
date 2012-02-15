@@ -64,10 +64,11 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>maven-android-plugin</artifactId>
+				<artifactId>android-maven-plugin</artifactId>
 				<version>${maven.android.plugin.version}</version>
 				<extensions>true</extensions>
 
@@ -100,7 +101,7 @@
 				<plugins>
 					<plugin>
 						<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-						<artifactId>maven-android-plugin</artifactId>
+						<artifactId>android-maven-plugin</artifactId>
 						<configuration>
 							<sign>
 								<debug>false</debug>
