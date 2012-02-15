@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.mortbay.ijetty</groupId>
-  <artifactId>console-parent</artifactId>
-  <packaging>pom</packaging>
-  <version>3.2-SNAPSHOT</version>
-  <name>I-Jetty :: Console Parent</name>
-  <description>Parent project for console</description>
-  <modules>
-    <module>webapp</module>
-    <module>apk</module>
-  </modules>
-  <properties>
-     <android.version>1.6_r2</android.version>
-     <jetty.version>7.6.0.RC4</jetty.version>
-     <servlet.version>2.5-20081211</servlet.version>
-  </properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.mortbay.ijetty</groupId>
+	<artifactId>console-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>3.2-SNAPSHOT</version>
+
+	<name>I-Jetty :: Console Parent</name>
+	<description>Parent project for console</description>
+
+	<modules>
+		<module>webapp</module>
+		<module>apk</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<maven.compiler.plugin.version>2.3</maven.compiler.plugin.version>
+		<maven.compiler.source>1.5</maven.compiler.source>
+		<maven.compiler.target>1.5</maven.compiler.target>
+
+		<maven.dependency.plugin.version>2.3</maven.dependency.plugin.version>
+
+		<maven.android.plugin.version>3.1.1</maven.android.plugin.version>
+
+		<android.version>1.6_r2</android.version>
+		<jetty.version>7.6.0.RC4</jetty.version>
+		<servlet.version>2.5-20081211</servlet.version>
+
+		<android.sdk.path>/home/patrick/dev/external/android-sdk-linux</android.sdk.path>
+		<android.sdk.version>10</android.sdk.version>
+		<android.platform>platforms/android-${android.sdk.version}</android.platform>
+	</properties>
+
 </project>
