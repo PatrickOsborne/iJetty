@@ -58,7 +58,7 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
     {
         writer.write( "<HTML>\n<HEAD>\n<TITLE>Welcome to i-jetty" );
         writer.write( "</TITLE>\n<BODY>\n<H2>Welcome to i-jetty</H2>\n" );
-        writer.write( "<p>i-jetty is running successfully.</p>" );
+        writer.write( "<p>i-jetty is running successfully. (time: " + System.currentTimeMillis() + ")</p>" );
 
         Server server = getServer();
         Handler[] handlers = server == null ? null : server.getChildHandlersByClass( ContextHandler.class );
