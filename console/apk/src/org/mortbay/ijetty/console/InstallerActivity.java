@@ -359,7 +359,6 @@ public class InstallerActivity extends Activity
         thread.start();
     }
 
-
     /**
      * Extract the war.
      *
@@ -386,11 +385,11 @@ public class InstallerActivity extends Activity
         }
 
         File webapp = new File( webappsDir, "console" );
-        JarInputStream jin = new JarInputStream( warStream );
+        JarInputStream jarInputStream = new JarInputStream( warStream );
         try
         {
             JarEntry entry;
-            while ( (entry = jin.getNextJarEntry()) != null )
+            while ( (entry = jarInputStream.getNextJarEntry()) != null )
             {
                 String entryName = entry.getName();
                 File file = new File( webapp, entryName );
@@ -412,11 +411,10 @@ public class InstallerActivity extends Activity
                     }
 
                     // Make file
-                    FileOutputStream fout = null;
+                    FileOutputStream fout = new FileOutputStream( file );
                     try
                     {
-                        fout = new FileOutputStream( file );
-                        IO.copy( jin, fout );
+                        IO.copy( jarInputStream, fout );
                     }
                     finally
                     {
@@ -424,7 +422,7 @@ public class InstallerActivity extends Activity
                     }
 
                     // touch the file.
-                    if ( entry.getTime() >= 0 )
+                    if ( entry.getTime() >= 0L )
                     {
                         file.setLastModified( entry.getTime() );
                     }
@@ -433,8 +431,9 @@ public class InstallerActivity extends Activity
         }
         finally
         {
-            if ( jin != null ) {
-                IO.close( jin );
+            if ( jarInputStream != null )
+            {
+                IO.close( jarInputStream );
             }
         }
     }
