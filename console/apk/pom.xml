@@ -59,7 +59,7 @@
 				<executions>
 					<execution>
 						<id>copy-war</id>
-						<phase>generate-sources</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
@@ -88,7 +88,6 @@
 						<platform>${android.sdk.version}</platform>
 					</sdk>
 
-					<!--<deleteConflictingFiles>true</deleteConflictingFiles>-->
 					<extractDuplicates>true</extractDuplicates>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					<resourceOverlayDirectories>

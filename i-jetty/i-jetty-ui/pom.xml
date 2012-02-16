@@ -76,7 +76,7 @@
 					<sdk>
 						<platform>${android.sdk.version}</platform>
 					</sdk>
-					<deleteConflictingFiles>true</deleteConflictingFiles>
+
 					<extractDuplicates>true</extractDuplicates>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
 				</configuration>
