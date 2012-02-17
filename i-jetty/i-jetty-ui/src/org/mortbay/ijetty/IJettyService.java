@@ -66,9 +66,8 @@ public class IJettyService extends Service
 {
     private static final String TAG = "Jetty";
     
-    private static Resources __resources;
-    private static final String CONTENT_RESOLVER_ATTRIBUTE = "org.mortbay.ijetty.contentResolver";
-    private static final String ANDROID_CONTEXT_ATTRIBUTE = "org.mortbay.ijetty.context"; 
+    public static final String CONTENT_RESOLVER_ATTRIBUTE = "org.mortbay.ijetty.contentResolver";
+    public static final String ANDROID_CONTEXT_ATTRIBUTE = "org.mortbay.ijetty.context";
     
     public static final int __START_PROGRESS_DIALOG = 0;
     public static final int __STARTED = 0;
@@ -77,7 +76,9 @@ public class IJettyService extends Service
     public static final int __NOT_STOPPED = 3;
     public static final int __STARTING = 4;
     public static final int __STOPPING = 5;
-    
+
+    private static Resources __resources;
+
     public static final String[] __configurationClasses = 
         new String[]
         {
@@ -109,12 +110,10 @@ public class IJettyService extends Service
     private PowerManager.WakeLock wakeLock;
     private final IBinder binder = new LocalBinder();
 
-    
-    static 
+    static
     {
         __isRunning = false;
     }
-    
     
     /**
      * IJettyService always runs in-process with the IJetty activity.
@@ -125,14 +124,7 @@ public class IJettyService extends Service
             return IJettyService.this;
         }
     }
-    
-    
-    
-    /**
-     * JettyStarterThread
-     *
-     *
-     */
+
     public class JettyStarterThread extends Thread
     {
         android.os.Handler _handler;
@@ -168,13 +160,7 @@ public class IJettyService extends Service
             _handler.sendMessage(msg);
         }
     }
-    
-    
-    /**
-     * JettyStopperThread
-     *
-     *
-     */
+
     public class JettyStopperThread extends Thread
     { 
         android.os.Handler _handler;
@@ -211,7 +197,6 @@ public class IJettyService extends Service
             _handler.sendMessage(msg);
         }
     }
-    
 
     /**
      * Hack to get around bug in ResourceBundles
@@ -227,16 +212,11 @@ public class IJettyService extends Service
             return null;
     }
 
-
-    
     public static boolean isRunning ()
     {
         return __isRunning;
     }
     
-    /**
-     * 
-     */
     public IJettyService()
     {
         super();
@@ -320,9 +300,6 @@ public class IJettyService extends Service
         };
     }
     
-    
-
-
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -346,8 +323,7 @@ public class IJettyService extends Service
         }
     }
 
-
-    /** 
+    /**
      * Android Service Start
      * @see android.app.Service#onStart(android.content.Intent, int)
      */
@@ -426,7 +402,6 @@ public class IJettyService extends Service
         }
     }
 
-
     /** 
      * Android Service destroy
      * @see android.app.Service#onDestroy()
@@ -459,18 +434,12 @@ public class IJettyService extends Service
         }
     }
     
-    
-   
-    
-
     public void onLowMemory()
     {
         Log.i(TAG, "Low on memory");
         super.onLowMemory();
     }
 
-
-    
     /**
      * Get a reference to the Jetty Server instance
      * @return
@@ -479,8 +448,6 @@ public class IJettyService extends Service
     {
         return server;
     }
-    
-
     
     protected Server newServer()
     {
@@ -491,8 +458,7 @@ public class IJettyService extends Service
     {
         return new ContextHandlerCollection();
     }
-  
-    
+
     protected void configureConnectors()
     {
         if (server != null)
@@ -612,8 +578,7 @@ public class IJettyService extends Service
             server.addBean(realm);
         }
     }
-    
-    
+
     protected void startJetty() throws Exception
     {
 
@@ -658,6 +623,5 @@ public class IJettyService extends Service
             Log.i(TAG,"Finally stopped");
         }
     }
-    
-    
+
 }
