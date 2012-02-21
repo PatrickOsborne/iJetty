@@ -64,7 +64,6 @@ import android.widget.TextView;
  */
 public class IJetty extends Activity
 {
-
     private static final String TAG = "Jetty";
     
     public static final String __START_ACTION = "org.mortbay.ijetty.start";
@@ -92,8 +91,8 @@ public class IJetty extends Activity
     public static final int __SETUP_RUNNING = 1;
     public static final int __SETUP_NOTDONE = 0;
 
-    
     public static final File __JETTY_DIR;
+
     private Button startButton;
     private Button stopButton;
     private Button configButton;

@@ -2,6 +2,7 @@ package org.mortbay.ijetty.handler;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,10 @@ import org.eclipse.jetty.util.StringUtil;
 
 public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHandler
 {
+    public static final String FORMAT_STRING = "EEE dd MMM yyyy HH:mm:ss.SSS zzz";
+
+    private final SimpleDateFormat format = new SimpleDateFormat( FORMAT_STRING );
+
     public void handle( String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response )
             throws IOException, ServletException
     {
@@ -58,7 +63,7 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
     {
         writer.write( "<HTML>\n<HEAD>\n<TITLE>Welcome to i-jetty" );
         writer.write( "</TITLE>\n<BODY>\n<H2>Welcome to i-jetty</H2>\n" );
-        writer.write( "<p>i-jetty is running successfully. (time: " + System.currentTimeMillis() + ")</p>" );
+        writer.write( "<p>i-jetty is running successfully. (" + format.format( System.currentTimeMillis() ) + ")</p>" );
 
         Server server = getServer();
         Handler[] handlers = server == null ? null : server.getChildHandlersByClass( ContextHandler.class );
