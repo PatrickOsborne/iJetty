@@ -22,7 +22,6 @@ import java.io.InputStream;
 import org.mortbay.ijetty.deployer.AndroidContextDeployer;
 import org.mortbay.ijetty.deployer.AndroidWebAppDeployer;
 import org.mortbay.ijetty.handler.DefaultHandler;
-import org.mortbay.ijetty.util.AndroidInfo;
 import org.mortbay.ijetty.util.IJettyToast;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -526,15 +525,15 @@ public class IJettyService extends Service
         AndroidWebAppDeployer staticDeployer =  new AndroidWebAppDeployer();
         AndroidContextDeployer contextDeployer = new AndroidContextDeployer();
      
-        File jettyDir = IJetty.__JETTY_DIR;
+        File jettyDir = IJetty.JETTY_DIR;
         
         if (jettyDir.exists())
         {
             // If the webapps dir exists, start the static webapp deployer
             if (new File(jettyDir, IJetty.__WEBAPP_DIR).exists())
             {
-                staticDeployer.setWebAppDir(IJetty.__JETTY_DIR+"/"+IJetty.__WEBAPP_DIR);
-                staticDeployer.setDefaultsDescriptor(IJetty.__JETTY_DIR+"/"+IJetty.__ETC_DIR+"/webdefault.xml");
+                staticDeployer.setWebAppDir(IJetty.JETTY_DIR +"/"+IJetty.__WEBAPP_DIR);
+                staticDeployer.setDefaultsDescriptor(IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/webdefault.xml");
                 staticDeployer.setContexts(contexts);
                 staticDeployer.setAttribute(CONTENT_RESOLVER_ATTRIBUTE, getContentResolver());
                 staticDeployer.setAttribute(ANDROID_CONTEXT_ATTRIBUTE, (Context) IJettyService.this);
@@ -546,7 +545,7 @@ public class IJettyService extends Service
             if (new File(jettyDir, IJetty.__CONTEXTS_DIR).exists())
             {
                 contextDeployer.setScanInterval(10); // Don't eat the battery
-                contextDeployer.setConfigurationDir(IJetty.__JETTY_DIR+"/"+IJetty.__CONTEXTS_DIR);                
+                contextDeployer.setConfigurationDir(IJetty.JETTY_DIR +"/"+IJetty.__CONTEXTS_DIR);
                 contextDeployer.setAttribute(CONTENT_RESOLVER_ATTRIBUTE, getContentResolver());
                 contextDeployer.setAttribute(ANDROID_CONTEXT_ATTRIBUTE, (Context) IJettyService.this);             
                 contextDeployer.setContexts(contexts);
@@ -568,10 +567,10 @@ public class IJettyService extends Service
     
     public void configureRealm () throws IOException
     {
-        File realmProps = new File(IJetty.__JETTY_DIR+"/"+IJetty.__ETC_DIR+"/realm.properties");
+        File realmProps = new File(IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/realm.properties");
         if (realmProps.exists())
         {
-            HashLoginService realm = new HashLoginService("Console", IJetty.__JETTY_DIR+"/"+IJetty.__ETC_DIR+"/realm.properties");
+            HashLoginService realm = new HashLoginService("Console", IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/realm.properties");
             realm.setRefreshInterval(0);
             if (_consolePassword != null)
                 realm.putUser("admin", Credential.getCredential(_consolePassword), new String[]{"admin"}); //set the admin password for console webapp
@@ -583,7 +582,7 @@ public class IJettyService extends Service
     {
 
         //Set jetty.home
-        System.setProperty ("jetty.home", IJetty.__JETTY_DIR.getAbsolutePath());
+        System.setProperty ("jetty.home", IJetty.JETTY_DIR.getAbsolutePath());
 
         //ipv6 workaround for froyo
         System.setProperty("java.net.preferIPv6Addresses", "false");

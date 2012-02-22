@@ -134,7 +134,7 @@ public class Installer
         }
         configurationClassesXml += "</Array>";
 
-        File tmpDir = new File( IJetty.__JETTY_DIR + "/" + IJetty.__TMP_DIR );
+        File tmpDir = new File( IJetty.JETTY_DIR + "/" + IJetty.__TMP_DIR );
         File tmpContextFile = new File( tmpDir, webappName + ".xml" );
 
         PrintWriter writer = new PrintWriter( tmpContextFile );
@@ -149,7 +149,7 @@ public class Installer
         writer.println( "</Configure>" );
         writer.flush();
         writer.close();
-        File contextDir = new File( IJetty.__JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR );
+        File contextDir = new File( IJetty.JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR );
         File contextFile = new File( contextDir, webappName + ".xml" );
         if ( !tmpContextFile.renameTo( contextFile ) )
         {
@@ -166,26 +166,26 @@ public class Installer
         }
 
         //delete any tmp context.xml file left over
-        File tmpDir = new File( IJetty.__JETTY_DIR + "/" + IJetty.__TMP_DIR );
+        File tmpDir = new File( IJetty.JETTY_DIR + "/" + IJetty.__TMP_DIR );
         File contextFile = new File( tmpDir, webappName + ".xml" );
         contextFile.delete();
-        Log.i( "Jetty", "deleted " + IJetty.__JETTY_DIR + "/" + IJetty.__TMP_DIR + "/" + webappName + ".xml" );
+        Log.i( "Jetty", "deleted " + IJetty.JETTY_DIR + "/" + IJetty.__TMP_DIR + "/" + webappName + ".xml" );
 
         //delete the real context.xml file (will cause an undeploy if jetty is running)
-        File contextDir = new File( IJetty.__JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR );
+        File contextDir = new File( IJetty.JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR );
         contextFile = new File( contextDir, webappName + ".xml" );
         contextFile.delete();
-        Log.i( "Jetty", "deleted " + IJetty.__JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR + "/" + webappName + ".xml" );
+        Log.i( "Jetty", "deleted " + IJetty.JETTY_DIR + "/" + IJetty.__CONTEXTS_DIR + "/" + webappName + ".xml" );
 
         //delete the unpacked webapp
-        File webappsDir = new File( IJetty.__JETTY_DIR + "/" + IJetty.__WEBAPP_DIR );
+        File webappsDir = new File( IJetty.JETTY_DIR + "/" + IJetty.__WEBAPP_DIR );
         File webapp = new File( webappsDir, webappName );
 
         if ( webapp.exists() )
         {
             delete( webapp );
         }
-        Log.i( TAG, "deleted " + IJetty.__JETTY_DIR + "/" + IJetty.__WEBAPP_DIR + "/" + webappName );
+        Log.i( TAG, "deleted " + IJetty.JETTY_DIR + "/" + IJetty.__WEBAPP_DIR + "/" + webappName );
 
         warFile.delete();
         Log.i( TAG, "deleted " + warFile.getAbsolutePath() );

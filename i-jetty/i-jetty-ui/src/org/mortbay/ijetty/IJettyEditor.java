@@ -21,17 +21,22 @@ import android.preference.PreferenceActivity;
 
 public class IJettyEditor extends PreferenceActivity
 {
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreate( Bundle savedInstanceState )
     {
-        super.onCreate(savedInstanceState);
-        if (android.os.Build.VERSION.SDK_INT < 8)
-            addPreferencesFromResource(R.xml.ijetty_preference);
+        super.onCreate( savedInstanceState );
+        if ( android.os.Build.VERSION.SDK_INT < 8 )
+        {
+            addPreferencesFromResource( R.xml.ijetty_preference );
+        }
         else
-            addPreferencesFromResource(R.xml.ijetty_preference_froyo);
+        {
+            addPreferencesFromResource( R.xml.ijetty_preference_froyo );
+        }
     }
-    
-    public static void show(Context context) {
-        final Intent intent = new Intent(context, IJettyEditor.class);
-        context.startActivity(intent);
+
+    public static void show( Context context )
+    {
+        final Intent intent = new Intent( context, IJettyEditor.class );
+        context.startActivity( intent );
     }
 }
