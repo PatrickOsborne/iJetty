@@ -22,7 +22,7 @@ public class IJettyWebappManagementActivity extends Activity
         super.onCreate( savedInstanceState );
 
         TextView view = new TextView( this );
-        view.setText( "Webapp Management Activity" );
+        view.setText( "Webapp Management TBD" );
         setContentView( view );
     }
 
