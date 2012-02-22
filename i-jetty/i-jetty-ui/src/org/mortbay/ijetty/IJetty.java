@@ -97,6 +97,7 @@ public class IJetty extends Activity
     private Button startButton;
     private Button stopButton;
     private Button configButton;
+    private Button webappsButton;
 
     private TextView footer;
     private TextView info;
@@ -153,6 +154,7 @@ public class IJetty extends Activity
         startButton = (Button) findViewById( R.id.start );
         stopButton = (Button) findViewById( R.id.stop );
         configButton = (Button) findViewById( R.id.config );
+        webappsButton = (Button) findViewById( R.id.webapps_button );
         final Button downloadButton = (Button) findViewById( R.id.download );
 
         IntentFilter filter = new IntentFilter();
@@ -165,9 +167,10 @@ public class IJetty extends Activity
 
         // Watch for button clicks.
         startButton.setOnClickListener( new StartButtonOnClickListener() );
-        stopButton.setOnClickListener( new StopButtonOnClickListener() );
-        configButton.setOnClickListener( new ConfigButtonOnClickListener() );
-        downloadButton.setOnClickListener( new DownloadButtonOnClickListener() );
+        stopButton.setOnClickListener( new StopButtonOnClickListener(this) );
+        configButton.setOnClickListener( new ConfigButtonOnClickListener(this) );
+        downloadButton.setOnClickListener( new DownloadButtonOnClickListener(this) );
+        webappsButton.setOnClickListener( new WebappConfigButtonOnClickListener( this ) );
 
         info = (TextView) findViewById( R.id.info );
         footer = (TextView) findViewById( R.id.footer );
@@ -700,27 +703,55 @@ public class IJetty extends Activity
         }
     }
 
-    private class StopButtonOnClickListener implements OnClickListener
+    private class StopButtonOnClickListener extends OnClickListenerWithContext
     {
+        private StopButtonOnClickListener( Context context )
+        {
+            super( context );
+        }
+
         public void onClick( View v )
         {
-            stopService( new Intent( IJetty.this, IJettyService.class ) );
+            stopService( new Intent( getContext(), IJettyService.class ) );
         }
     }
 
-    private class ConfigButtonOnClickListener implements OnClickListener
+    private static class ConfigButtonOnClickListener extends OnClickListenerWithContext
     {
+        private ConfigButtonOnClickListener( Context context )
+        {
+            super( context );
+        }
+
         public void onClick( View v )
         {
-            IJettyEditor.show( IJetty.this );
+            IJettyEditor.show( getContext() );
         }
     }
 
-    private class DownloadButtonOnClickListener implements OnClickListener
+    private static class DownloadButtonOnClickListener extends OnClickListenerWithContext
     {
+        private DownloadButtonOnClickListener( Context context )
+        {
+            super( context );
+        }
+
         public void onClick( View v )
         {
-            IJettyDownloader.show( IJetty.this );
+            IJettyDownloader.show( getContext() );
+        }
+    }
+
+    private static class WebappConfigButtonOnClickListener extends OnClickListenerWithContext
+    {
+        private WebappConfigButtonOnClickListener( Context context )
+        {
+            super( context );
+        }
+
+        public void onClick( View v )
+        {
+            IJettyWebappManagementActivity.show( getContext() );
         }
     }
 }

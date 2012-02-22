@@ -35,6 +35,12 @@
 					  android:id='@+id/download'
 					  android:text='@string/download_webapp'/>
 		</TableRow>
+
+		<TableRow android:layout_width='fill_parent' android:layout_height='wrap_content' android:layout_weight='1.0'>
+			<Button android:layout_width='fill_parent' android:layout_height='wrap_content' android:layout_weight='1.0'
+					  android:id='@+id/webapps_button'
+					  android:text='@string/webapps_button_text'/>
+		</TableRow>
 	</TableLayout>
 
 	<TextView android:layout_width='wrap_content' android:layout_height='wrap_content'
