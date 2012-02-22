@@ -1,38 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-			 package="org.mortbay.ijetty"
-			 android:versionCode="32"
-			 android:versionName="3.2-SNAPSHOT">
+<?xml version='1.0' encoding='utf-8'?>
+<manifest xmlns:android='http://schemas.android.com/apk/res/android'
+			 package='org.mortbay.ijetty'
+			 android:versionCode='32'
+			 android:versionName='3.2-SNAPSHOT'>
 
-	<uses-sdk android:minSdkVersion="4"/>
+	<uses-sdk android:minSdkVersion='4'/>
 
-	<application android:debuggable="true" android:label="@string/app_name" android:icon="@drawable/icon">
-		<activity android:name=".IJetty" android:label="@string/app_name" android:icon="@drawable/icon"
-					 android:theme="@style/Theme.IJetty"
-					 android:screenOrientation="sensor"
-					 android:multiprocess="false"
-					 android:launchMode="singleInstance">
+	<application android:debuggable='true' android:label='@string/app_name' android:icon='@drawable/icon'>
+		<activity android:name='.IJetty' android:label='@string/app_name' android:icon='@drawable/icon'
+					 android:theme='@style/Theme.IJetty'
+					 android:screenOrientation='sensor'
+					 android:multiprocess='false'
+					 android:launchMode='singleInstance'>
 
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
+				<action android:name='android.intent.action.MAIN'/>
+				<category android:name='android.intent.category.LAUNCHER'/>
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".IJettyEditor" android:theme="@style/Theme.IJetty"/>
-		<activity android:name=".IJettyDownloader" android:theme="@style/Theme.IJetty"/>
-		<activity android:name=".SdCardUnavailableActivity" android:theme="@style/Theme.IJetty"/>
-		<activity android:name=".IJettyWebappManagementActivity" android:label='@string/webapp_mgmt_label' android:theme="@style/Theme.SubActivity"/>
+		<activity android:name='.IJettyEditor' android:label='@string/config_activity_label' android:theme='@style/Theme.SubActivity'/>
+		<activity android:name='.IJettyDownloader' android:label='@string/download_activity_label' android:theme='@style/Theme.SubActivity'/>
+		<activity android:name='.SdCardUnavailableActivity' android:theme='@style/Theme.IJetty'/>
+		<activity android:name='.IJettyWebappManagementActivity' android:label='@string/webapp_mgmt_label' android:theme='@style/Theme.SubActivity'/>
 
-		<service android:name=".IJettyService"/>
+		<service android:name='.IJettyService'/>
 	</application>
 
-	<uses-permission android:name="android.permission.READ_CONTACTS"/>
-	<uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-	<uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.WAKE_LOCK"/>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name='android.permission.WRITE_SETTINGS'/>
+	<uses-permission android:name='android.permission.INTERNET'/>
+	<uses-permission android:name='android.permission.WAKE_LOCK'/>
+	<uses-permission android:name='android.permission.WRITE_EXTERNAL_STORAGE'/>
+	<uses-permission android:name='android.permission.ACCESS_COARSE_LOCATION'/>
+	<uses-permission android:name='android.permission.ACCESS_FINE_LOCATION'/>
 </manifest> 
