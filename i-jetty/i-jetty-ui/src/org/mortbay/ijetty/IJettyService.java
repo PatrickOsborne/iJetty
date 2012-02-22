@@ -243,7 +243,7 @@ public class IJettyService extends Service
 
                         mNM.notify(R.string.jetty_started, notification);
                         
-                        Intent startIntent = new Intent(IJetty.__START_ACTION);
+                        Intent startIntent = new Intent(IJetty.START_ACTION );
                         startIntent.addCategory("default");
                         Connector[] connectors = server.getConnectors();
                         if (connectors != null)
@@ -271,7 +271,7 @@ public class IJettyService extends Service
                         mNM.cancel(R.string.jetty_started);
                         // Tell the user we stopped.
                         IJettyToast.showServiceToast(IJettyService.this,R.string.jetty_stopped);
-                        Intent stopIntent = new Intent(IJetty.__STOP_ACTION);
+                        Intent stopIntent = new Intent(IJetty.STOP_ACTION );
                         stopIntent.addCategory("default");
                         sendBroadcast(stopIntent);
                         break;
@@ -530,10 +530,10 @@ public class IJettyService extends Service
         if (jettyDir.exists())
         {
             // If the webapps dir exists, start the static webapp deployer
-            if (new File(jettyDir, IJetty.__WEBAPP_DIR).exists())
+            if (new File(jettyDir, IJetty.WEBAPP_DIR ).exists())
             {
-                staticDeployer.setWebAppDir(IJetty.JETTY_DIR +"/"+IJetty.__WEBAPP_DIR);
-                staticDeployer.setDefaultsDescriptor(IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/webdefault.xml");
+                staticDeployer.setWebAppDir(IJetty.JETTY_DIR +"/"+IJetty.WEBAPP_DIR );
+                staticDeployer.setDefaultsDescriptor(IJetty.JETTY_DIR +"/"+IJetty.ETC_DIR +"/webdefault.xml");
                 staticDeployer.setContexts(contexts);
                 staticDeployer.setAttribute(CONTENT_RESOLVER_ATTRIBUTE, getContentResolver());
                 staticDeployer.setAttribute(ANDROID_CONTEXT_ATTRIBUTE, (Context) IJettyService.this);
@@ -542,10 +542,10 @@ public class IJettyService extends Service
             }          
            
             // Use a ContextDeploy so we can hot-deploy webapps and config at startup.
-            if (new File(jettyDir, IJetty.__CONTEXTS_DIR).exists())
+            if (new File(jettyDir, IJetty.CONTEXTS_DIR ).exists())
             {
                 contextDeployer.setScanInterval(10); // Don't eat the battery
-                contextDeployer.setConfigurationDir(IJetty.JETTY_DIR +"/"+IJetty.__CONTEXTS_DIR);
+                contextDeployer.setConfigurationDir(IJetty.JETTY_DIR +"/"+IJetty.CONTEXTS_DIR );
                 contextDeployer.setAttribute(CONTENT_RESOLVER_ATTRIBUTE, getContentResolver());
                 contextDeployer.setAttribute(ANDROID_CONTEXT_ATTRIBUTE, (Context) IJettyService.this);             
                 contextDeployer.setContexts(contexts);
@@ -567,10 +567,10 @@ public class IJettyService extends Service
     
     public void configureRealm () throws IOException
     {
-        File realmProps = new File(IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/realm.properties");
+        File realmProps = new File(IJetty.JETTY_DIR +"/"+IJetty.ETC_DIR +"/realm.properties");
         if (realmProps.exists())
         {
-            HashLoginService realm = new HashLoginService("Console", IJetty.JETTY_DIR +"/"+IJetty.__ETC_DIR+"/realm.properties");
+            HashLoginService realm = new HashLoginService("Console", IJetty.JETTY_DIR +"/"+IJetty.ETC_DIR +"/realm.properties");
             realm.setRefreshInterval(0);
             if (_consolePassword != null)
                 realm.putUser("admin", Credential.getCredential(_consolePassword), new String[]{"admin"}); //set the admin password for console webapp

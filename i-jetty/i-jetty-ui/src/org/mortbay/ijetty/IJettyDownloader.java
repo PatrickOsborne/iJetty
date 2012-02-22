@@ -111,7 +111,7 @@ public class IJettyDownloader extends Activity
      */
     public IJettyDownloader()
     {
-        tmpDir = new File(IJetty.JETTY_DIR +"/"+IJetty.__TMP_DIR);
+        tmpDir = new File(IJetty.JETTY_DIR +"/"+IJetty.TMP_DIR );
     }
     
     /** 
@@ -422,7 +422,7 @@ public class IJettyDownloader extends Activity
     {
         try
         {
-            File webappDir = new File (IJetty.JETTY_DIR +"/"+IJetty.__WEBAPP_DIR);
+            File webappDir = new File (IJetty.JETTY_DIR +"/"+IJetty.WEBAPP_DIR );
             String name = file.getName();
             if (name.endsWith(".war") || name.endsWith(".jar"))
                 name = name.substring(0, name.length()-4);

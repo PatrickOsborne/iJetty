@@ -66,30 +66,31 @@ public class IJetty extends Activity
 {
     private static final String TAG = "Jetty";
 
-    public static final String __START_ACTION = "org.mortbay.ijetty.start";
-    public static final String __STOP_ACTION = "org.mortbay.ijetty.stop";
+    public static final String START_ACTION = "org.mortbay.ijetty.start";
+    public static final String STOP_ACTION = "org.mortbay.ijetty.stop";
 
-    public static final String __PORT = "org.mortbay.ijetty.port";
-    public static final String __NIO = "org.mortbay.ijetty.nio";
-    public static final String __SSL = "org.mortbay.ijetty.ssl";
+    public static final String PORT = "org.mortbay.ijetty.port";
+    public static final String NIO = "org.mortbay.ijetty.nio";
+    public static final String SSL = "org.mortbay.ijetty.ssl";
 
-    public static final String __CONSOLE_PWD = "org.mortbay.ijetty.console";
-    public static final String __PORT_DEFAULT = "8080";
-    public static final boolean __NIO_DEFAULT = true;
-    public static final boolean __SSL_DEFAULT = false;
+    public static final String CONSOLE_PWD = "org.mortbay.ijetty.console";
+    public static final String PORT_DEFAULT = "8080";
+    public static final boolean NIO_DEFAULT = true;
+    public static final boolean SSL_DEFAULT = false;
 
-    public static final String __CONSOLE_PWD_DEFAULT = "admin";
+    public static final String CONSOLE_PWD_DEFAULT = "admin";
 
-    public static final String __WEBAPP_DIR = "webapps";
-    public static final String __ETC_DIR = "etc";
-    public static final String __CONTEXTS_DIR = "contexts";
+    public static final String WEBAPP_DIR = "webapps";
+    public static final String ETC_DIR = "etc";
+    public static final String CONTEXTS_DIR = "contexts";
 
-    public static final String __TMP_DIR = "tmp";
-    public static final String __WORK_DIR = "work";
-    public static final int __SETUP_PROGRESS_DIALOG = 0;
-    public static final int __SETUP_DONE = 2;
-    public static final int __SETUP_RUNNING = 1;
-    public static final int __SETUP_NOTDONE = 0;
+    public static final String TMP_DIR = "tmp";
+    public static final String WORK_DIR = "work";
+
+    public static final int SETUP_PROGRESS_DIALOG = 0;
+    public static final int SETUP_DONE = 2;
+    public static final int SETUP_RUNNING = 1;
+    public static final int SETUP_NOTDONE = 0;
 
     public static final File JETTY_DIR;
 
@@ -113,7 +114,7 @@ public class IJetty extends Activity
     static
     {
         JETTY_DIR = new File( Environment.getExternalStorageDirectory(), "jetty" );
-        // Ensure parsing is not validating - does not work with android
+        // Ensure parser is not validating - does not work with android
         System.setProperty( "org.eclipse.jetty.xml.XmlParser.Validating", "false" );
 
         // Bridge Jetty logging to Android logging
@@ -154,104 +155,26 @@ public class IJetty extends Activity
         configButton = (Button) findViewById( R.id.config );
         final Button downloadButton = (Button) findViewById( R.id.download );
 
-
         IntentFilter filter = new IntentFilter();
-        filter.addAction( __START_ACTION );
-        filter.addAction( __STOP_ACTION );
+        filter.addAction( START_ACTION );
+        filter.addAction( STOP_ACTION );
         filter.addCategory( "default" );
 
-        bcastReceiver = new BroadcastReceiver()
-        {
-
-            public void onReceive( Context context, Intent intent )
-            {
-                if ( __START_ACTION.equalsIgnoreCase( intent.getAction() ) )
-                {
-                    startButton.setEnabled( false );
-                    configButton.setEnabled( false );
-                    stopButton.setEnabled( true );
-                    consolePrint( "<br/>Started Jetty at %s", new Date() );
-                    String[] connectors = intent.getExtras().getStringArray( "connectors" );
-                    if ( null != connectors )
-                    {
-                        for ( int i = 0; i < connectors.length; i++ )
-                        {
-                            consolePrint( connectors[i] );
-                        }
-                    }
-
-                    printNetworkInterfaces();
-
-                    if ( AndroidInfo.isOnEmulator( IJetty.this ) )
-                    {
-                        consolePrint( "Set up port forwarding to see i-jetty outside of the emulator." );
-                    }
-                }
-                else if ( __STOP_ACTION.equalsIgnoreCase( intent.getAction() ) )
-                {
-                    startButton.setEnabled( true );
-                    configButton.setEnabled( true );
-                    stopButton.setEnabled( false );
-                    consolePrint( "<br/> Jetty stopped at %s", new Date() );
-                }
-            }
-
-        };
-
+        bcastReceiver = new IJettyBroadcastReceiver();
         registerReceiver( bcastReceiver, filter );
 
         // Watch for button clicks.
-        startButton.setOnClickListener( new OnClickListener()
-        {
-            public void onClick( View v )
-            {
-                if ( isUpdateNeeded() )
-                {
-                    IJettyToast.showQuickToast( IJetty.this, R.string.loading );
-                }
-                else
-                {
-                    //TODO get these values from editable UI elements
-                    Intent intent = new Intent( IJetty.this, IJettyService.class );
-                    intent.putExtra( __PORT, __PORT_DEFAULT );
-                    intent.putExtra( __NIO, __NIO_DEFAULT );
-                    intent.putExtra( __SSL, __SSL_DEFAULT );
-                    intent.putExtra( __CONSOLE_PWD, __CONSOLE_PWD_DEFAULT );
-                    startService( intent );
-                }
-            }
-        } );
-
-        stopButton.setOnClickListener( new OnClickListener()
-        {
-            public void onClick( View v )
-            {
-                stopService( new Intent( IJetty.this, IJettyService.class ) );
-            }
-        } );
-
-        configButton.setOnClickListener( new OnClickListener()
-        {
-            public void onClick( View v )
-            {
-                IJettyEditor.show( IJetty.this );
-            }
-        } );
-
-        downloadButton.setOnClickListener( new OnClickListener()
-        {
-            public void onClick( View v )
-            {
-                IJettyDownloader.show( IJetty.this );
-            }
-        } );
+        startButton.setOnClickListener( new StartButtonOnClickListener() );
+        stopButton.setOnClickListener( new StopButtonOnClickListener() );
+        configButton.setOnClickListener( new ConfigButtonOnClickListener() );
+        downloadButton.setOnClickListener( new DownloadButtonOnClickListener() );
 
         info = (TextView) findViewById( R.id.info );
         footer = (TextView) findViewById( R.id.footer );
         console = (TextView) findViewById( R.id.console );
         consoleScroller = (ScrollView) findViewById( R.id.consoleScroller );
 
-        StringBuilder infoBuffer = new StringBuilder();
+        StringBuilder infoBuffer = new StringBuilder(64);
         try
         {
             PackageInfo pi = getPackageManager().getPackageInfo( getPackageName(), 0 );
@@ -261,10 +184,11 @@ public class IJetty extends Activity
         {
             infoBuffer.append( formatJettyInfoLine( "i-jetty version unknown" ) );
         }
+
         infoBuffer.append( formatJettyInfoLine( "On %s using Android version %s", AndroidInfo.getDeviceModel(), AndroidInfo.getOSVersion() ) );
         info.setText( Html.fromHtml( infoBuffer.toString() ) );
 
-        StringBuilder footerBuffer = new StringBuilder();
+        StringBuilder footerBuffer = new StringBuilder(128);
         footerBuffer.append( "<b>Project:</b> <a href=\"http://code.google.com/p/i-jetty\">http://code.google.com/p/i-jetty</a> <br/>" );
         footerBuffer.append( "<b>Server:</b> http://www.eclipse.org/jetty <br/>" );
         footerBuffer.append( "<b>Support:</b> http://www.intalio.com/jetty/services <br/>" );
@@ -313,7 +237,7 @@ public class IJetty extends Activity
     {
         switch ( id )
         {
-            case __SETUP_PROGRESS_DIALOG:
+            case SETUP_PROGRESS_DIALOG:
                 progressDialog = new ProgressDialog( IJetty.this );
                 progressDialog.setProgressStyle( ProgressDialog.STYLE_HORIZONTAL );
                 progressDialog.setMessage( "Finishing initial install ..." );
@@ -390,7 +314,7 @@ public class IJetty extends Activity
 
     private void setupJetty()
     {
-        showDialog( __SETUP_PROGRESS_DIALOG );
+        showDialog( SETUP_PROGRESS_DIALOG );
         progressThread = new ProgressThread( handler );
         progressThread.start();
     }
@@ -566,7 +490,7 @@ public class IJetty extends Activity
             //Original versions of i-jetty created a work directory. So
             //we will delete it here if found to ensure webapps can be
             //updated successfully.
-            File workDir = new File( jettyDir, __WORK_DIR );
+            File workDir = new File( jettyDir, WORK_DIR );
             if ( workDir.exists() )
             {
                 Installer.delete( workDir );
@@ -575,7 +499,7 @@ public class IJetty extends Activity
 
 
             //make jetty/tmp
-            File tmpDir = new File( jettyDir, __TMP_DIR );
+            File tmpDir = new File( jettyDir, TMP_DIR );
             if ( !tmpDir.exists() )
             {
                 boolean made = tmpDir.mkdirs();
@@ -587,7 +511,7 @@ public class IJetty extends Activity
             }
 
             //make jetty/webapps
-            File webappsDir = new File( jettyDir, __WEBAPP_DIR );
+            File webappsDir = new File( jettyDir, WEBAPP_DIR );
             if ( !webappsDir.exists() )
             {
                 boolean made = webappsDir.mkdirs();
@@ -599,7 +523,7 @@ public class IJetty extends Activity
             }
 
             //make jetty/etc
-            File etcDir = new File( jettyDir, __ETC_DIR );
+            File etcDir = new File( jettyDir, ETC_DIR );
             if ( !etcDir.exists() )
             {
                 boolean made = etcDir.mkdirs();
@@ -667,7 +591,7 @@ public class IJetty extends Activity
             sendProgressUpdate( 60 );
 
             //make jetty/contexts
-            File contextsDir = new File( jettyDir, __CONTEXTS_DIR );
+            File contextsDir = new File( jettyDir, CONTEXTS_DIR );
             if ( !contextsDir.exists() )
             {
                 boolean made = contextsDir.mkdirs();
@@ -711,9 +635,92 @@ public class IJetty extends Activity
             progressDialog.setProgress( total );
             if ( total >= 100 )
             {
-                dismissDialog( __SETUP_PROGRESS_DIALOG );
+                dismissDialog( SETUP_PROGRESS_DIALOG );
             }
         }
 
+    }
+
+    private class IJettyBroadcastReceiver extends BroadcastReceiver
+    {
+
+        public void onReceive( Context context, Intent intent )
+        {
+            if ( START_ACTION.equalsIgnoreCase( intent.getAction() ) )
+            {
+                startButton.setEnabled( false );
+                configButton.setEnabled( false );
+                stopButton.setEnabled( true );
+                consolePrint( "<br/>Started Jetty at %s", new Date() );
+                String[] connectors = intent.getExtras().getStringArray( "connectors" );
+                if ( null != connectors )
+                {
+                    for ( int i = 0; i < connectors.length; i++ )
+                    {
+                        consolePrint( connectors[i] );
+                    }
+                }
+
+                printNetworkInterfaces();
+
+                if ( AndroidInfo.isOnEmulator( IJetty.this ) )
+                {
+                    consolePrint( "Set up port forwarding to see i-jetty outside of the emulator." );
+                }
+            }
+            else if ( STOP_ACTION.equalsIgnoreCase( intent.getAction() ) )
+            {
+                startButton.setEnabled( true );
+                configButton.setEnabled( true );
+                stopButton.setEnabled( false );
+                consolePrint( "<br/> Jetty stopped at %s", new Date() );
+            }
+        }
+
+    }
+
+    private class StartButtonOnClickListener implements OnClickListener
+    {
+        public void onClick( View v )
+        {
+            if ( isUpdateNeeded() )
+            {
+                IJettyToast.showQuickToast( IJetty.this, R.string.loading );
+            }
+            else
+            {
+                //TODO get these values from editable UI elements
+                Intent intent = new Intent( IJetty.this, IJettyService.class );
+                intent.putExtra( PORT, PORT_DEFAULT );
+                intent.putExtra( NIO, NIO_DEFAULT );
+                intent.putExtra( SSL, SSL_DEFAULT );
+                intent.putExtra( CONSOLE_PWD, CONSOLE_PWD_DEFAULT );
+                startService( intent );
+            }
+        }
+    }
+
+    private class StopButtonOnClickListener implements OnClickListener
+    {
+        public void onClick( View v )
+        {
+            stopService( new Intent( IJetty.this, IJettyService.class ) );
+        }
+    }
+
+    private class ConfigButtonOnClickListener implements OnClickListener
+    {
+        public void onClick( View v )
+        {
+            IJettyEditor.show( IJetty.this );
+        }
+    }
+
+    private class DownloadButtonOnClickListener implements OnClickListener
+    {
+        public void onClick( View v )
+        {
+            IJettyDownloader.show( IJetty.this );
+        }
     }
 }
