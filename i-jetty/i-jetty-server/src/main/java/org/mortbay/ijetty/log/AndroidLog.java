@@ -15,124 +15,143 @@
 
 package org.mortbay.ijetty.log;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.eclipse.jetty.util.log.Logger;
-
-import android.util.Log;
-
-public class AndroidLog implements Logger
+public class AndroidLog implements org.eclipse.jetty.util.log.Logger
 {
-    public static final String LOG_TAG = "Jetty";
+    private static final Logger LOGGER = LoggerFactory.getLogger( "Jetty" );
 
-    public static final AtomicBoolean isIgnoredEnabled = new AtomicBoolean();
-
-    public final String name;
+    private final Logger logger;
 
     public AndroidLog()
     {
-        this( "org.mortbay.ijetty.AndroidLog" );
+        this( LOGGER );
+    }
+
+    public AndroidLog( Logger logger )
+    {
+        this.logger = logger;
     }
 
     public AndroidLog( String name )
     {
-        this.name = name;
+        this(LoggerFactory.getLogger( name ));
     }
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void debug( Throwable th )
-    {
-        if ( Log.isLoggable( LOG_TAG, Log.DEBUG ) )
-        {
-            Log.d( LOG_TAG, "", th );
-        }
-    }
-
-    public void debug( String msg, Throwable th )
-    {
-        if ( Log.isLoggable( LOG_TAG, Log.DEBUG ) )
-        {
-            Log.d( LOG_TAG, msg, th );
-        }
-    }
-
-    public void debug( String msg, Object... args )
-    {
-        if ( Log.isLoggable( LOG_TAG, Log.DEBUG ) )
-        {
-            Log.d( LOG_TAG, msg );
-        }
-    }
-
-    public Logger getLogger( String name )
+    public org.eclipse.jetty.util.log.Logger getLogger( String name )
     {
         return new AndroidLog( name );
     }
 
-    public void info( String msg, Object... args )
+    public String getName()
     {
-        Log.i( LOG_TAG, msg );
-    }
-
-    public void info( Throwable th )
-    {
-        Log.i( LOG_TAG, "", th );
-    }
-
-    public void info( String msg, Throwable th )
-    {
-        Log.i( LOG_TAG, msg, th );
+        return logger.getName();
     }
 
     public boolean isDebugEnabled()
     {
-        return Log.isLoggable( LOG_TAG, Log.DEBUG );
+        return logger.isDebugEnabled();
     }
 
-    public void warn( Throwable th )
+    public boolean isErrorEnabled()
     {
-        if ( Log.isLoggable( LOG_TAG, Log.WARN ) )
-        {
-            Log.e( LOG_TAG, "", th );
-        }
+        return logger.isErrorEnabled();
     }
 
-    public void warn( String msg, Object... args )
+    public boolean isInfoEnabled()
     {
-        if ( Log.isLoggable( LOG_TAG, Log.WARN ) )
-        {
-            Log.w( LOG_TAG, msg );
-        }
+        return logger.isInfoEnabled();
     }
 
-    public void warn( String msg, Throwable th )
+    public boolean isTraceEnabled()
     {
-        if ( Log.isLoggable( LOG_TAG, Log.ERROR ) )
-        {
-            Log.e( LOG_TAG, msg, th );
-        }
+        return logger.isTraceEnabled();
     }
 
-    public boolean isIgnoredEnabled()
+    public boolean isWarnEnabled()
     {
-        return isIgnoredEnabled.get();
+        return logger.isWarnEnabled();
+    }
+
+    public void debug( String msg, Object arg )
+    {
+        logger.debug( msg, arg );
+    }
+
+    public void debug( String msg, Object arg, Object arg1 )
+    {
+        logger.debug( msg, arg, arg1 );
+    }
+
+    public void debug( String msg, Object[] args )
+    {
+        logger.debug( msg, args );
+    }
+
+    public void debug( String msg, Throwable throwable )
+    {
+        logger.debug( msg, throwable );
+    }
+
+    public void debug( Throwable throwable )
+    {
+        logger.debug( "", throwable );
+    }
+
+    public void info( String msg, Object arg )
+    {
+        logger.info( msg, arg );
+    }
+
+    public void info( String msg, Object arg, Object arg1 )
+    {
+        logger.info( msg, arg, arg1 );
+    }
+
+    public void info( String msg, Object[] args )
+    {
+        logger.info( msg, args );
+    }
+
+    public void info( String msg, Throwable throwable )
+    {
+        logger.info( msg, throwable );
+    }
+
+    public void info( Throwable throwable )
+    {
+        logger.info( "", throwable );
+    }
+
+    public void warn( String msg, Object arg )
+    {
+        logger.warn( msg, arg );
+    }
+
+    public void warn( String msg, Object arg, Object arg1 )
+    {
+        logger.warn( msg, arg, arg1 );
+    }
+
+    public void warn( String msg, Object[] args )
+    {
+        logger.warn( msg, args );
+    }
+
+    public void warn( String msg, Throwable throwable )
+    {
+        logger.warn( msg, throwable );
+    }
+
+    public void warn( Throwable throwable )
+    {
+        logger.warn( "", throwable );
     }
 
     public void ignore( Throwable ignored )
     {
-        if ( isIgnoredEnabled.get() )
-        {
-            Log.w( LOG_TAG, "IGNORED", ignored );
-        }
-    }
-
-    public void setIgnoredEnabled( boolean enabled )
-    {
-        isIgnoredEnabled.set( enabled );
+        warn( "IGNORED ", ignored );
     }
 
     public void setDebugEnabled( boolean enabled )

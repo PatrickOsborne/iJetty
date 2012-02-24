@@ -32,6 +32,9 @@
 		<android.sdk.path>/home/patrick/dev/external/android-sdk-linux</android.sdk.path>
 		<android.sdk.version>10</android.sdk.version>
 		<android.platform>platforms/android-${android.sdk.version}</android.platform>
+
+		<org.slf4j.version>1.6.1</org.slf4j.version>
+		<ch.qos.logback.android.version>1.0.0-4</ch.qos.logback.android.version>
 	</properties>
 
 	<build>
@@ -50,7 +53,12 @@
 		</pluginManagement>
 	</build>
 
-	<!--<repositories>-->
+	<repositories>
+		<repository>
+			<id>mvn-ext-libs</id>
+			<url>http://mvn-repo.googlecode.com/svn/repository</url>
+		</repository>
+
 		<!--<repository>-->
 			<!--<id>oss-jetty-snapshots</id>-->
 			<!--<url>http://oss.sonatype.org/content/repositories/jetty-snapshots</url>-->
@@ -62,6 +70,6 @@
 				<!--<enabled>true</enabled>-->
 			<!--</snapshots>-->
 		<!--</repository>-->
-	<!--</repositories>-->
+	</repositories>
 
 </project>
