@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 public class AndroidLog implements org.eclipse.jetty.util.log.Logger
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger( "Jetty" );
+    private static final Logger LOGGER = LoggerFactory.getLogger( "iJetty" );
 
     private final Logger logger;
 
