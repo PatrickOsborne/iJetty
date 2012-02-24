@@ -14,6 +14,8 @@
 
 package org.mortbay.ijetty;
 
+import static org.mortbay.ijetty.common.LogSupport.TAG;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -93,12 +95,12 @@ public class IJettyDownloader extends Activity
             if ( client != null )
             {
                 client.stop();
-                Log.i( "Jetty", "Stopped httpclient" );
+                Log.i( TAG, "Stopped httpclient" );
             }
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Error stopping httpclient ", e );
+            Log.e( TAG, "Error stopping httpclient ", e );
         }
         finally
         {
@@ -137,12 +139,12 @@ public class IJettyDownloader extends Activity
             if ( client != null )
             {
                 client.stop();
-                Log.i( "Jetty", "Stopped httpclient" );
+                Log.i( TAG, "Stopped httpclient" );
             }
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Error stopping httpclient ", e );
+            Log.e( TAG, "Error stopping httpclient ", e );
         }
         finally
         {
@@ -164,7 +166,7 @@ public class IJettyDownloader extends Activity
         {
             if ( !warFile.createNewFile() )
             {
-                Log.i( "Jetty", war + ": File exists" );
+                Log.i( TAG, war + ": File exists" );
                 AlertDialog.Builder builder = new AlertDialog.Builder( this );
                 builder.setCancelable( true );
                 builder.setMessage( R.string.overwrite );
@@ -199,7 +201,7 @@ public class IJettyDownloader extends Activity
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Error creating file " + war, e );
+            Log.e( TAG, "Error creating file " + war, e );
             return;
         }
     }
@@ -231,7 +233,7 @@ public class IJettyDownloader extends Activity
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Error starting client", e );
+            Log.e( TAG, "Error starting client", e );
             msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Failed to start client" ) );
             return;
         }
@@ -248,12 +250,12 @@ public class IJettyDownloader extends Activity
         exchange.setURL( url );
         try
         {
-            Log.i( "Jetty", "Downloading " + url );
+            Log.i( TAG, "Downloading " + url );
             client.send( exchange );
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Download failed for " + url );
+            Log.e( TAG, "Download failed for " + url );
         }
     }
 
@@ -274,7 +276,7 @@ public class IJettyDownloader extends Activity
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Bad url " + url );
+            Log.e( TAG, "Bad url " + url );
             return null;
         }
     }
@@ -295,7 +297,7 @@ public class IJettyDownloader extends Activity
         }
         catch ( Exception e )
         {
-            Log.e( "Jetty", "Bad resource", e );
+            Log.e( TAG, "Bad resource", e );
             msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Exception" ) );
         }
     }
@@ -344,7 +346,7 @@ public class IJettyDownloader extends Activity
                     //onReportProgress(msg.arg1);
                     break;
                 default:
-                    Log.e( "Jetty", "Unknown message id " + msg.what );
+                    Log.e( TAG, "Unknown message id " + msg.what );
             }
         }
     }
@@ -373,7 +375,7 @@ public class IJettyDownloader extends Activity
             }
             else
             {
-                Log.e( "Jetty", "Bad status: " + getResponseStatus() );
+                Log.e( TAG, "Bad status: " + getResponseStatus() );
                 msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Bad status: " + getResponseStatus() ) );
             }
         }
@@ -382,7 +384,7 @@ public class IJettyDownloader extends Activity
         {
             closeOutputStream();
             msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Connection failed" ) );
-            Log.e( "Jetty", "Connection fail", ex );
+            Log.e( TAG, "Connection fail", ex );
             super.onConnectionFailed( ex );
         }
 
@@ -390,7 +392,7 @@ public class IJettyDownloader extends Activity
         {
             closeOutputStream();
             msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Exception" ) );
-            Log.e( "Jetty", "Error on download", ex );
+            Log.e( TAG, "Error on download", ex );
             super.onException( ex );
         }
 
@@ -398,7 +400,7 @@ public class IJettyDownloader extends Activity
         {
             closeOutputStream();
             msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Expired" ) );
-            Log.e( "Jetty", "Expired: " + url );
+            Log.e( TAG, "Expired: " + url );
             super.onExpire();
         }
 
@@ -411,7 +413,7 @@ public class IJettyDownloader extends Activity
             }
             catch ( Exception e )
             {
-                Log.e( "Jetty", "Error reading content", e );
+                Log.e( TAG, "Error reading content", e );
                 msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Exception" ) );
             }
         }
@@ -436,7 +438,7 @@ public class IJettyDownloader extends Activity
             }
             catch ( IOException e )
             {
-                Log.e( "Jetty", "Error closing stream", e );
+                Log.e( TAG, "Error closing stream", e );
                 msgHandler.sendMessage( Message.obtain( msgHandler, MSG_DOWNLOAD_FAILED, "Exception" ) );
             }
         }

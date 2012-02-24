@@ -25,7 +25,7 @@
 
 		<maven.android.plugin.version>3.1.1</maven.android.plugin.version>
 
-		<android.version>1.6_r2</android.version>
+		<android.version>2.1.2</android.version>
 		<jetty.version>7.6.0.RC4</jetty.version>
 		<servlet.version>2.5-20081211</servlet.version>
 

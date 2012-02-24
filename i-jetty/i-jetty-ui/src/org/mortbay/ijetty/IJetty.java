@@ -15,6 +15,8 @@
 
 package org.mortbay.ijetty;
 
+import static org.mortbay.ijetty.common.LogSupport.TAG;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -64,8 +66,6 @@ import android.widget.TextView;
  */
 public class IJetty extends Activity
 {
-    private static final String TAG = "Jetty";
-
     public static final String START_ACTION = "org.mortbay.ijetty.start";
     public static final String STOP_ACTION = "org.mortbay.ijetty.stop";
 
@@ -115,6 +115,8 @@ public class IJetty extends Activity
     static
     {
         JETTY_DIR = new File( Environment.getExternalStorageDirectory(), "jetty" );
+        Log.i( TAG, "Jetty Directory: " + JETTY_DIR.getAbsolutePath() );
+
         // Ensure parser is not validating - does not work with android
         System.setProperty( "org.eclipse.jetty.xml.XmlParser.Validating", "false" );
 

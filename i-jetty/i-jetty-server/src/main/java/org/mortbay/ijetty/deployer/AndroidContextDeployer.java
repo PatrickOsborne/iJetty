@@ -60,8 +60,9 @@ public class AndroidContextDeployer extends AbstractLifeCycle {
         }
     }
 
+    public static final String       NAME                = "ConfiguredDeployer";
+
     private AttributesMap            _attributes         = null;
-    public final static String       NAME                = "ConfiguredDeployer";
     private int                      _scanInterval       = 10;
     private Scanner                  _scanner;
     private ScannerListener          _scannerListener;
@@ -74,7 +75,6 @@ public class AndroidContextDeployer extends AbstractLifeCycle {
     private boolean                  _recursive          = false;
 
     public AndroidContextDeployer() throws Exception {
-        super();
         _scanner = new Scanner();
         _attributes = new AttributesMap();
     }

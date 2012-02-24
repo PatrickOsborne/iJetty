@@ -128,9 +128,9 @@ public class Installer
         contextPath = contextPath.startsWith( "/" ) ? contextPath : "/" + contextPath;
 
         String configurationClassesXml = "<Array type=\"java.lang.String\">";
-        for ( int i = 0; i < IJettyService.__configurationClasses.length; i++ )
+        for ( int i = 0; i < IJettyService.configurationClasses.length; i++ )
         {
-            configurationClassesXml += "<Item>" + IJettyService.__configurationClasses[i] + "</Item>";
+            configurationClassesXml += "<Item>" + IJettyService.configurationClasses[i] + "</Item>";
         }
         configurationClassesXml += "</Array>";
 

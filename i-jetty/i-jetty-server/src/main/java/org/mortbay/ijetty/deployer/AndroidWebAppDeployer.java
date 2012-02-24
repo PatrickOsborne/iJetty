@@ -54,14 +54,10 @@ public class AndroidWebAppDeployer extends WebAppDeployer {
     private AttributesMap _attributes = new AttributesMap();
 
     /* ------------------------------------------------------------ */
-    /**
-     * @throws Exception
-     */
     @Override
     public void doStart() throws Exception {
         _deployed = new ArrayList<ServletContextHandler>();
         scan();
-
     }
 
     @Override

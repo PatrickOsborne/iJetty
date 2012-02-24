@@ -66,7 +66,7 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
         writer.write( "<p>i-jetty is running successfully. (" + format.format( System.currentTimeMillis() ) + ")</p>" );
 
         Server server = getServer();
-        Handler[] handlers = server == null ? null : server.getChildHandlersByClass( ContextHandler.class );
+        Handler[] handlers = (server == null ? null : server.getChildHandlersByClass( ContextHandler.class ));
 
         int i;
         for (i = 0; handlers != null && i < handlers.length; i++ )
@@ -80,25 +80,17 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
             if ( context.isRunning() )
             {
                 writer.write( "<li><a href=\"" );
-                if ( context.getVirtualHosts() != null && context.getVirtualHosts().length > 0 )
-                {
-                    writer.write( "http://" + context.getVirtualHosts()[0] + ":" + request.getLocalPort() );
-                }
+                String url = getURLForContext( request, context );
+                writer.write( url + "\">" );
 
                 writer.write( context.getContextPath() );
-                if ( context.getContextPath().length() > 1 && context.getContextPath().endsWith( "/" ) )
-                {
-                    writer.write( "/" );
-                }
 
-                writer.write( "\">" );
-                writer.write( context.getContextPath() );
                 if ( context.getVirtualHosts() != null && context.getVirtualHosts().length > 0 )
                 {
                     writer.write( "&nbsp;@&nbsp;" + context.getVirtualHosts()[0] + ":" + request.getLocalPort() );
                 }
 
-                writer.write( "&nbsp;--->&nbsp;" );
+                writer.write( "&nbsp;-->&nbsp;" );
                 writer.write( context.toString() );
                 writer.write( "</a></li>\n" );
             }
@@ -144,6 +136,21 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
 
         writer.write( "\n</BODY>\n</HTML>\n" );
         writer.flush();
+    }
+
+    private String getURLForContext( HttpServletRequest request, ContextHandler context ) throws IOException
+    {
+        if ( context.getVirtualHosts() != null && context.getVirtualHosts().length > 0 )
+        {
+            StringBuilder sb = new StringBuilder(
+                    "http://" + context.getVirtualHosts()[0] + ":" + request.getLocalPort() + "/" + context.getContextPath() );
+            if ( context.getContextPath().length() > 1 && context.getContextPath().endsWith( "/" ) )
+            {
+                sb.append( "/" );
+            }
+            return sb.toString();
+        }
+        return "no virtual hosts";
     }
 
 }
