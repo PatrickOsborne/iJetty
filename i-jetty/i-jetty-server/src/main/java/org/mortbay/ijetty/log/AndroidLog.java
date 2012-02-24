@@ -15,12 +15,16 @@
 
 package org.mortbay.ijetty.log;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AndroidLog implements org.eclipse.jetty.util.log.Logger
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( "iJetty" );
+
+    private static final AtomicBoolean IS_IGNORED_ENABLED = new AtomicBoolean();
 
     private final Logger logger;
 
@@ -151,10 +155,24 @@ public class AndroidLog implements org.eclipse.jetty.util.log.Logger
 
     public void ignore( Throwable ignored )
     {
-        warn( "IGNORED ", ignored );
+        if ( IS_IGNORED_ENABLED.get() )
+        {
+            warn( "IGNORED ", ignored );
+        }
     }
 
     public void setDebugEnabled( boolean enabled )
     {
     }
+
+    public static boolean isIgnoredEnabled()
+    {
+        return IS_IGNORED_ENABLED.get();
+    }
+
+    public static void setIgnoredEnabled( boolean enabled )
+    {
+        IS_IGNORED_ENABLED.set( enabled );
+    }
+
 }
