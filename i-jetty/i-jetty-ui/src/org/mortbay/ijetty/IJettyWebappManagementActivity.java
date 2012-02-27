@@ -2,12 +2,14 @@ package org.mortbay.ijetty;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.mortbay.ijetty.IJettyService.IJettyServiceBinder;
 import org.mortbay.ijetty.common.BaseActivity;
 import org.mortbay.ijetty.common.LogSupport;
+import org.slf4j.helpers.NOPLoggerFactory;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,6 +27,7 @@ public class IJettyWebappManagementActivity extends BaseActivity
 {
     private static final String JETTY_SERVER_NOT_STARTED = "Jetty server not started";
     private static final String JETTY_SERVER_STARTED = "Jetty server started";
+    private static final char NL = '\n';
 
     private final AtomicReference<IJettyService> serviceRef = new AtomicReference<IJettyService>();
     private TextView textView;
@@ -40,7 +43,7 @@ public class IJettyWebappManagementActivity extends BaseActivity
     {
         super.onCreate( savedInstanceState );
 
-        // TODO
+        // TODO when did this flag get added to Android?
 //        bindService( new Intent( this, IJettyService.class ), serviceConnection, Context.BIND_NOT_FOREGROUND );
         bindService( new Intent( this, IJettyService.class ), serviceConnection, 0 );
 
@@ -88,7 +91,67 @@ public class IJettyWebappManagementActivity extends BaseActivity
         }
 
         textView.setText( JETTY_SERVER_STARTED );
+
+        StringBuilder sb = new StringBuilder( 256 );
+
+        Connector[] connectors = server.getConnectors();
+        if ( connectors == null )
+        {
+            sb.append( "no virtual hosts found" + NL );
+        }
+        else
+        {
+            for ( int i = 0; i < connectors.length; i++ )
+            {
+                if ( i != 0 )
+                {
+                    sb.append( NL );
+                }
+                Connector connector = connectors[i];
+                sb.append( "connector(" + i + "): " + connector.getName() + NL );
+                sb.append( "host: " + connector.getHost() + NL );
+                sb.append( "port: " + connector.getPort() + NL );
+//                sb.append( "integral port: " + connector.getIntegralPort() + NL );
+//                sb.append( "integral scheme: " + connector.getIntegralScheme() + NL );
+//                sb.append( "confidential scheme: " + connector.getConfidentialScheme() + NL );
+//                sb.append( "confidential port: " + connector.getConfidentialPort() + NL );
+            }
+        }
+
+        sb.append( NL );
+
         Handler[] handlers = (server == null ? null : server.getChildHandlersByClass( ContextHandler.class ));
+
+        for ( int i = 0; i < handlers.length; i++ )
+        {
+            if ( i != 0 )
+            {
+                sb.append( NL );
+            }
+
+            ContextHandler contextHandler = (ContextHandler) handlers[i];
+            sb.append( "context(" + i + "): " + contextHandler + NL );
+            sb.append( "name: " + contextHandler.getDisplayName() + NL );
+            sb.append( "contextPath: " + contextHandler.getContextPath() + NL );
+
+            String[] virtualHosts = contextHandler.getVirtualHosts();
+            if ( virtualHosts == null )
+            {
+                sb.append( "no virtual hosts found" + NL );
+            }
+            else
+            {
+                for ( int j = 0; j < virtualHosts.length; j++ )
+                {
+                    String virtualHost = virtualHosts[j];
+                    sb.append( "virtual host(" + j + "): " + virtualHost + NL );
+                }
+            }
+        }
+
+        sb.append( NL );
+
+        textView.setText( JETTY_SERVER_STARTED + NL + NL + sb.toString() );
     }
 
     private class ServiceConnectionImpl implements ServiceConnection

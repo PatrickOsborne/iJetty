@@ -35,6 +35,8 @@ import org.eclipse.jetty.util.IO;
 import org.mortbay.ijetty.log.AndroidLog;
 import org.mortbay.ijetty.util.AndroidInfo;
 import org.mortbay.ijetty.util.IJettyToast;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -66,6 +68,8 @@ import android.widget.TextView;
  */
 public class IJetty extends Activity
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger( IJetty.class.getSimpleName() );
+
     public static final String START_ACTION = "org.mortbay.ijetty.start";
     public static final String STOP_ACTION = "org.mortbay.ijetty.stop";
 
@@ -115,7 +119,6 @@ public class IJetty extends Activity
     static
     {
         JETTY_DIR = new File( Environment.getExternalStorageDirectory(), "jetty" );
-        Log.i( TAG, "Jetty Directory: " + JETTY_DIR.getAbsolutePath() );
 
         // Ensure parser is not validating - does not work with android
         System.setProperty( "org.eclipse.jetty.xml.XmlParser.Validating", "false" );
@@ -133,7 +136,7 @@ public class IJetty extends Activity
     public IJetty()
     {
         handler = new ProgressHandler();
-        Log.i( TAG, "Jetty Directory: " + JETTY_DIR );
+        LOGGER.info( "Jetty Directory: " + JETTY_DIR );
     }
 
     @Override
@@ -150,6 +153,7 @@ public class IJetty extends Activity
     public void onCreate( Bundle icicle )
     {
         super.onCreate( icicle );
+        LOGGER.info( "onCreate()" );
 
         setContentView( R.layout.jetty_controller );
 
@@ -157,6 +161,8 @@ public class IJetty extends Activity
         stopButton = (Button) findViewById( R.id.stop );
         configButton = (Button) findViewById( R.id.config );
         webappsButton = (Button) findViewById( R.id.webapps_button );
+        LOGGER.info( "webappsButton: " + webappsButton );
+
         final Button downloadButton = (Button) findViewById( R.id.download );
 
         IntentFilter filter = new IntentFilter();

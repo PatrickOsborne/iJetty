@@ -1,5 +1,7 @@
 package org.mortbay.ijetty.handler;
 
+import static org.mortbay.ijetty.common.LogSupport.TAG;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -10,12 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.http.HttpMethods;
 import org.eclipse.jetty.http.MimeTypes;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.ByteArrayISO8859Writer;
 import org.eclipse.jetty.util.StringUtil;
+
+import android.util.Log;
 
 
 public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHandler
@@ -69,7 +74,7 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
         Handler[] handlers = (server == null ? null : server.getChildHandlersByClass( ContextHandler.class ));
 
         int i;
-        for (i = 0; handlers != null && i < handlers.length; i++ )
+        for ( i = 0; handlers != null && i < handlers.length; i++ )
         {
             if ( i == 0 )
             {
@@ -80,7 +85,7 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
             if ( context.isRunning() )
             {
                 writer.write( "<li><a href=\"" );
-                String url = getURLForContext( request, context );
+                String url = getUrl( request, context );
                 writer.write( url + "\">" );
 
                 writer.write( context.getContextPath() );
@@ -138,19 +143,45 @@ public class DefaultHandler extends org.eclipse.jetty.server.handler.DefaultHand
         writer.flush();
     }
 
-    private String getURLForContext( HttpServletRequest request, ContextHandler context ) throws IOException
+    public static String getUrl( HttpServletRequest request, ContextHandler context ) throws IOException
     {
         if ( context.getVirtualHosts() != null && context.getVirtualHosts().length > 0 )
         {
-            StringBuilder sb = new StringBuilder(
-                    "http://" + context.getVirtualHosts()[0] + ":" + request.getLocalPort() + "/" + context.getContextPath() );
-            if ( context.getContextPath().length() > 1 && context.getContextPath().endsWith( "/" ) )
-            {
-                sb.append( "/" );
-            }
-            return sb.toString();
+            return createUrl( request.getScheme(), context.getVirtualHosts()[0], request.getLocalPort(), context.getContextPath() );
         }
-        return "no virtual hosts";
+        else
+        {
+            Connector[] connectors = context.getServer().getConnectors();
+            Log.d( TAG, "connectors for request: " + (connectors == null ? 0 : connectors.length) );
+            if ( connectors != null && connectors.length > 0 )
+            {
+                for ( int i = 0; i < connectors.length; i++ )
+                {
+                    Connector connector = connectors[i];
+                    if ( connector.getPort() == request.getLocalPort() )
+                    {
+                        Log.d( TAG, "found connector: " + connector.getLocalPort() + ": " + connector );
+                        return createUrl( request.getScheme(), request.getLocalName(), request.getLocalPort(), context.getContextPath() );
+                    }
+                }
+            }
+
+            throw new RuntimeException( "no virtual hosts found" );
+        }
+    }
+
+    public static String createUrl( String scheme, String host, int localPort, String contextPath )
+    {
+        return scheme + "://" + host + ":" + localPort + createContextPath( contextPath );
+    }
+
+    private static String createContextPath( String contextPath )
+    {
+        if ( contextPath.startsWith( "/" ) )
+        {
+            return contextPath;
+        }
+        return "/" + contextPath;
     }
 
 }

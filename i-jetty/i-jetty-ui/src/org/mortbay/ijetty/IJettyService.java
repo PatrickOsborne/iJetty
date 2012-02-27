@@ -251,6 +251,7 @@ public class IJettyService extends Service
 
         try
         {
+            Log.d( TAG, "starting jetty" );
             preferences = PreferenceManager.getDefaultSharedPreferences( this );
 
             String portDefault = getText( R.string.pref_port_value ).toString();
@@ -508,7 +509,9 @@ public class IJettyService extends Service
         Log.i( TAG, "jetty.home: " + IJetty.JETTY_DIR.getAbsolutePath() );
 
         //ipv6 workaround for froyo
-        System.setProperty( "java.net.preferIPv6Addresses", "false" );
+        String preferIPv6Addresses = "false";
+        System.setProperty( "java.net.preferIPv6Addresses", preferIPv6Addresses );
+        Log.i( TAG, "preferIPv6Addresses: " + preferIPv6Addresses );
 
         server.set( newServer() );
 
