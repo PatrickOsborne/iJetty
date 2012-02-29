@@ -44,6 +44,7 @@
 			</appender>
 
 			<logger name='org.eclipse.jetty.util.Scanner' level='info' />
+			<logger name='ssl' level='info' />
 
 			<root level='debug'>
 				<appender-ref ref='LOGCAT'/>
