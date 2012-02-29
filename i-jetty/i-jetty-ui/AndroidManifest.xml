@@ -31,4 +31,24 @@
 	<uses-permission android:name='android.permission.INTERNET'/>
 	<uses-permission android:name='android.permission.WAKE_LOCK'/>
 	<uses-permission android:name='android.permission.WRITE_EXTERNAL_STORAGE'/>
+
+	<logback>
+		<configuration>
+			<appender name='LOGCAT' class='ch.qos.logback.classic.android.LogcatAppender'>
+				<tagEncoder>
+					<pattern>%logger{0}</pattern>
+				</tagEncoder>
+				<encoder>
+					<pattern>%msg%n</pattern>
+				</encoder>
+			</appender>
+
+			<logger name='org.eclipse.jetty.util.Scanner' level='info' />
+
+			<root level='debug'>
+				<appender-ref ref='LOGCAT'/>
+			</root>
+		</configuration>
+	</logback>
+
 </manifest>
