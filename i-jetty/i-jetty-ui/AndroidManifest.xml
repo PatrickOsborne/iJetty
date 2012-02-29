@@ -36,7 +36,7 @@
 		<configuration>
 			<appender name='LOGCAT' class='ch.qos.logback.classic.android.LogcatAppender'>
 				<tagEncoder>
-					<pattern>%logger{0}</pattern>
+					<pattern>%logger{4}</pattern>
 				</tagEncoder>
 				<encoder>
 					<pattern>%msg%n</pattern>
@@ -44,7 +44,8 @@
 			</appender>
 
 			<logger name='org.eclipse.jetty.util.Scanner' level='info' />
-			<logger name='ssl' level='info' />
+			<logger name='org.eclipse.jetty.io' level='info' />
+			<logger name='org.eclipse.jetty' level='info' />
 
 			<root level='debug'>
 				<appender-ref ref='LOGCAT'/>
