@@ -1,5 +1,5 @@
 //========================================================================
-//$Id: AndroidLog.java 391 2011-02-08 01:06:04Z janb.webtide $
+//$Id: AndroidLogger.java 391 2011-02-08 01:06:04Z janb.webtide $
 //Copyright 2008 Mort Bay Consulting Pty. Ltd.
 //------------------------------------------------------------------------
 //Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AndroidLog implements org.eclipse.jetty.util.log.Logger
+public class AndroidLogger implements org.eclipse.jetty.util.log.Logger
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( "iJetty" );
 
@@ -28,24 +28,24 @@ public class AndroidLog implements org.eclipse.jetty.util.log.Logger
 
     private final Logger logger;
 
-    public AndroidLog()
+    public AndroidLogger()
     {
         this( LOGGER );
     }
 
-    public AndroidLog( Logger logger )
+    public AndroidLogger( Logger logger )
     {
         this.logger = logger;
     }
 
-    public AndroidLog( String name )
+    public AndroidLogger( String name )
     {
         this(LoggerFactory.getLogger( name ));
     }
 
     public org.eclipse.jetty.util.log.Logger getLogger( String name )
     {
-        return new AndroidLog( name );
+        return new AndroidLogger( name );
     }
 
     public String getName()
