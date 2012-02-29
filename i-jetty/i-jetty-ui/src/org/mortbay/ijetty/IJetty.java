@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import org.eclipse.jetty.util.IO;
-import org.mortbay.ijetty.log.AndroidLog;
+import org.mortbay.ijetty.log.AndroidLogger;
 import org.mortbay.ijetty.util.AndroidInfo;
 import org.mortbay.ijetty.util.IJettyToast;
 import org.slf4j.Logger;
@@ -124,8 +124,8 @@ public class IJetty extends Activity
         System.setProperty( "org.eclipse.jetty.xml.XmlParser.Validating", "false" );
 
         // Bridge Jetty logging to Android logging
-        System.setProperty( "org.eclipse.jetty.util.log.class", "org.mortbay.ijetty.AndroidLog" );
-        org.eclipse.jetty.util.log.Log.setLog( new AndroidLog() );
+        System.setProperty( "org.eclipse.jetty.util.log.class", "org.mortbay.ijetty.AndroidLogger" );
+        org.eclipse.jetty.util.log.Log.setLog( new AndroidLogger() );
     }
 
     public static void show( Context context )
